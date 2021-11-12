@@ -2,7 +2,7 @@ from bottle import get, run, request
 import json
 from crawler import parse_short_obj, parse_full_obj
 from log import get_logger
-from db import sqlalchemy_saver, sqlalchemy_getAllData, sqlalchemy_deleteData_by_date, sqlalchemy_deleteAllData, sqlalchemy_getData_by_date
+from db import sqlalchemy_saver, sqlalchemy_getAllData
 
 @get('/short_news')
 def return_short_news():
@@ -19,10 +19,8 @@ def return_full_news():
     log.info("Getting request from zakon.kz general full info")
     result = json.dumps(parse_full_obj(count), ensure_ascii=False)
     # sqlalchemy_saver(result)
-    # sqlalchemy_getAllData(result)
-    # sqlalchemy_deleteData_by_date(result)
-    # sqlalchemy_deleteAllData()
-    sqlalchemy_getData_by_date(result)
+    sqlalchemy_getAllData()
+    # sqlalchemy_getData_by_date()
     return result
 
 
