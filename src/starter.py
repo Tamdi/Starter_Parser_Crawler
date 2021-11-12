@@ -20,7 +20,6 @@ def return_full_news():
     result = json.dumps(parse_full_obj(count), ensure_ascii=False)
     # sqlalchemy_saver(result)
     sqlalchemy_getAllData()
-    # sqlalchemy_getData_by_date()
     return result
 
 
