@@ -1,13 +1,15 @@
-from bottle import get, run, request
 import json
+from bottle import get, run, request
 from crawler import parse_short_obj, parse_full_obj
-from log import get_logger
 from db import sqlalchemy_saver, sqlalchemy_getData
+from config import PORT
+from log import get_logger
+
 
 @get('/short_news')
 def return_short_news():
     log.info("Sending request from zakon.kz general short info")
-    count = request.params.get('count', [0])[0]# count =
+    count = request.params.get('count', [0])[0] # count =
     log.info("Getting request from zakon.kz general short info")
     return json.dumps(parse_short_obj(count), ensure_ascii=False)
 
@@ -29,4 +31,4 @@ def get_saved():
 
 if __name__ == "__main__":
     log = get_logger("starter")
-    run(host='0.0.0.0', port=8080)
+    run(host='0.0.0.0', port=PORT)

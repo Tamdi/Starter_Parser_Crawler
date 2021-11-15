@@ -1,15 +1,15 @@
 import json
-from datetime import datetime
 import sqlalchemy.exc
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, Date, DateTime, String
+from sqlalchemy import create_engine, MetaData, Table, Column, DateTime, String
+from config import TABLE_NAME, POSTGRES_URL
 from hashing import calc_hash
 
 
 def sqlalchemy_saver(news_list):
-    engine = create_engine('postgresql://postgres:1@localhost:5432/postgres', echo=True)
+    engine = create_engine(POSTGRES_URL, echo=True)
     meta = MetaData()
     news_model = Table(
-        'news', meta,
+        TABLE_NAME, meta,
         Column('id', String, primary_key=True),
         Column('date', DateTime),
         Column('title', String),
@@ -36,13 +36,13 @@ def sqlalchemy_saver(news_list):
 
 
 def sqlalchemy_getData(from_date=None, to_date=None):
-    engine = create_engine('postgresql://postgres:1@localhost:5432/postgres', echo=True)
+    engine = create_engine(POSTGRES_URL, echo=True)
     meta = MetaData()
     meta.create_all(engine)
     if from_date:
-        result = engine.execute("SELECT * FROM news WHERE date BETWEEN {from_date} AND {to_date}")
+        result = engine.execute(f"SELECT * FROM {TABLE_NAME} WHERE date BETWEEN {from_date} AND {to_date}")
     else:
-        result = engine.execute("SELECT * FROM news")
+        result = engine.execute(f"SELECT * FROM {TABLE_NAME}")
     res = []
     for i in result:
         data = {

@@ -1,12 +1,13 @@
 from datetime import datetime
 from dateparser import parse
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
+from config import RESOURCE_URL
 
 
 def parse_short_obj(params):
     response = requests.get(
-        "https://www.zakon.kz/",
+        RESOURCE_URL,
         timeout=10,
     )
     if response.ok:
@@ -30,7 +31,7 @@ def parse_short_obj(params):
 
 def parse_full_obj(params):
     response = requests.get(
-        "https://www.zakon.kz/",
+        RESOURCE_URL,
         timeout=10,
     )
     if response.ok:
@@ -44,7 +45,7 @@ def parse_full_obj(params):
                     break
             url = _a.get('href')
             if (url[0] == "/") and (url[1] != "/"):
-                url = "".join(("https://www.zakon.kz", url))
+                url = "".join((RESOURCE_URL, url))
             response_new = requests.get(
                 url=url,
                 timeout=10,
