@@ -2,7 +2,7 @@ import json
 import sqlalchemy.exc
 from sqlalchemy import create_engine, MetaData, Table, Column, DateTime, String
 from config import TABLE_NAME, POSTGRES_URL
-from hashing import calc_hash
+from utils import calc_hash
 
 
 def sqlalchemy_saver(news_list):

@@ -3,7 +3,7 @@ from bottle import get, run, request
 from crawler import parse_short_obj, parse_full_obj
 from db import sqlalchemy_saver, sqlalchemy_getData
 from config import PORT
-from log import get_logger
+from utils import get_logger
 
 
 @get('/short_news')
