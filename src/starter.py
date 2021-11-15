@@ -18,7 +18,7 @@ def return_full_news():
     count = request.params.get('count', [0])[0] #count =
     log.info("Getting request from zakon.kz general full info")
     result = json.dumps(parse_full_obj(count), ensure_ascii=False)
-    # sqlalchemy_saver(result)
+    sqlalchemy_saver(result)
     return result
 
 

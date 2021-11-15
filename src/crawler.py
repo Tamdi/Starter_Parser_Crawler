@@ -71,9 +71,9 @@ def parse_full_obj(params):
             div_date = soup_new.find("div", {"class": "extrainfo"})
             date = div_date.span
             date_field=str(date)
-            date_text = date_field.replace("<span>", '').replace("</span>", '').replace("ноября", 'November')
+            date_text = date_field.replace("<span>", '').replace("</span>", '')
             dt = parse(date_text)
-            new_date = datetime.strftime(dt, '%d %m %Y, %H:%M')
+            new_date = datetime.strftime(dt, '%Y-%m-%dT%H:%M:%S.%fZ')
 
             data.append(
                 {
