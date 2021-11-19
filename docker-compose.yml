@@ -3,6 +3,5 @@ services:
   simple_parser_crawler:
     restart: on-failure
     build: ""
-    command: python starter.py
     ports:
-      - 0.0.0.0:8080:8080
+      - 0.0.0.0:8000:8000
