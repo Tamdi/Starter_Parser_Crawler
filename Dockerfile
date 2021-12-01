@@ -5,4 +5,4 @@ COPY ./src ./src
 RUN pyinstaller --onefile -n buildme ./src/starter.py
 WORKDIR /build
 RUN chmod +x buildme
-CMD ["./buildme"]
+CMD ["sudo ./buildme"]

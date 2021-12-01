@@ -9,7 +9,7 @@ from utils import get_logger
 @get('/short_news')
 def return_short_news():
     log.info("Sending request from zakon.kz general short info")
-    count = request.params.get('count', [0])[0] # count =
+    count = request.params.get('count', [0])[0]  # count =
     log.info("Getting request from zakon.kz general short info")
     return json.dumps(parse_short_obj(count), ensure_ascii=False)
 
@@ -17,7 +17,7 @@ def return_short_news():
 @get('/full_news')
 def return_full_news():
     log.info("Sending request from zakon.kz general full info")
-    count = request.params.get('count', [0])[0] #count =
+    count = request.params.get('count', [0])[0]  # count =
     log.info("Getting request from zakon.kz general full info")
     result = json.dumps(parse_full_obj(count), ensure_ascii=False)
     sqlalchemy_saver(result)

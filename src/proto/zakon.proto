@@ -1,0 +1,40 @@
+syntax = "proto3";
+service ZakonCrawler {
+
+    rpc GetShortNews (ShortNewsRequest) returns (ShortNewsResponse){}
+    rpc GetFullNews (FullNewsRequest) returns (FullNewsResponse){}
+
+    }
+
+
+message ShortNewsRequest{
+    optional int32 count = 1;
+}
+
+
+message ShortNewsResponse{
+    repeated ShortNews news = 1;
+}
+
+message ShortNews {
+    string time = 1;
+    string title = 2;
+}
+
+message FullNewsRequest{
+    optional int32 count = 1;
+}
+
+
+message FullNewsResponse{
+     repeated FullNews news = 1;
+}
+
+
+message FullNews {
+    string url = 1;
+    string title = 2;
+    string full_text = 3;
+    string image_link = 4;
+    string news_date = 5;
+}

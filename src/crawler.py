@@ -1,6 +1,5 @@
-from datetime import datetime
-from dateparser import parse
 import requests
+import json
 from bs4 import BeautifulSoup
 from config import RESOURCE_URL
 
@@ -12,12 +11,12 @@ def parse_short_obj(params):
     )
     if response.ok:
         response_content = response.content
-        soup = BeautifulSoup(response_content, 'html.parser')
-        div = soup.find("div", {"class": "lastnews"})
+        print(response_content)
         data = []
-        for _a in div.find_all('a'):
-            time = _a.text.strip()[0:5]
-            title = _a.text.replace(time, '').strip()
+        json_data = response.json()
+        for _a in json_data["data_list"]:
+            title = _a["page_title"]
+            time = _a["published_date"]
             data.append(
                 {
                     "time": time,
@@ -36,53 +35,34 @@ def parse_full_obj(params):
     )
     if response.ok:
         response_content = response.content
-        soup = BeautifulSoup(response_content, 'html.parser')
-        div = soup.find("div", {"class": "lastnews"})
+        print(response_content)
         data = []
-        for _i, _a in enumerate(div.find_all('a')):
-            if params:
-                if str(_i) == params:
-                    break
-            url = _a.get('href')
-            if (url[0] == "/") and (url[1] != "/"):
-                url = "".join((RESOURCE_URL, url))
-            response_new = requests.get(
-                url=url,
+        json_data = response.json()
+        for _a in json_data["data_list"]:
+            link_to_full_news="https://zakon.kz/"+_a["alias"]
+            response = requests.get(
+                link_to_full_news,
                 timeout=10,
             )
-            response_content_new = response_new.content
+            response_content_new = response.content
             soup_new = BeautifulSoup(response_content_new, 'html.parser')
-
-            # image_url
-            div_img = soup_new.find("div", {"class": "newspic"})
-            if not div_img:
-                continue
-            image_link = div_img.findAll('img')[0]['src']
-            if '//' in image_link:
-                image_link = "".join(("https:", image_link))
-
-            # title
-            div_head = soup_new.find("div", {"class": "fullhead"})
-            head = div_head.findAll('h1')[0].text.strip()
-
-            # text
-            full_text = soup_new.find("div", {"class": "newscont"}).text.strip()
-
-            # date
-            div_date = soup_new.find("div", {"class": "extrainfo"})
-            date = div_date.span
-            date_field=str(date)
-            date_text = date_field.replace("<span>", '').replace("</span>", '')
-            dt = parse(date_text)
-            new_date = datetime.strftime(dt, '%Y-%m-%dT%H:%M:%S.%fZ')
-
+            json_full_news = soup_new.find("script", {"type": "application/ld+json"})
+            full_news = json.loads(json_full_news.text)
+            print(json_full_news)
+            image_link = full_news["image"]["url"]
+            url = full_news["mainEntityOfPage"]["@id"]
+            title = full_news["headline"]
+            full_text = full_news["description"]
+            news_date = full_news["datePublished"]
             data.append(
                 {
                     "url": url,
-                    "title": head,
+                    "title": title,
                     "text": full_text,
                     "img_url": image_link,
-                    "date": new_date,
+                    "date": news_date,
                 }
             )
+        if params:
+            return data[0:int(params)]
         return data
