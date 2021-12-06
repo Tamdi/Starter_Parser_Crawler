@@ -6,15 +6,15 @@ from crawler import parse_short_obj, parse_full_obj
 from concurrent import futures
 
 
-class Service (ZakonCrawlerServicer):
+class Service(ZakonCrawlerServicer):
     def GetShortNews(self, request, context):
         data_short = parse_short_obj(request.count)
         news = []
         for n in data_short:
             news.append(
                 ShortNews(
-                    time=n["time"],
-                    title=n["title"]
+                    time=n.time,
+                    title=n.title
                 )
             )
         return ShortNewsResponse(
@@ -27,11 +27,11 @@ class Service (ZakonCrawlerServicer):
         for n in data_full:
             news.append(
                 FullNews(
-                    url=n["url"],
-                    title=n["title"],
-                    full_text=n["full_text"],
-                    image_link=n["image_link"],
-                    news_date=n["news_date"]
+                    url=n.url,
+                    title=n.title,
+                    full_text=n.text,
+                    image_link=n.img_url,
+                    news_date=n.date
                 )
             )
         return FullNewsResponse(
@@ -40,7 +40,7 @@ class Service (ZakonCrawlerServicer):
 
 
 if __name__ == "__main__":
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=4),)
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=4), )
     add_ZakonCrawlerServicer_to_server(Service(), server)
     server.add_insecure_port('[::]:8080')
     print("Starting grpc server...")

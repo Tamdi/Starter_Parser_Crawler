@@ -21,12 +21,12 @@ def sqlalchemy_saver(news_list):
     news_list = json.loads(news_list)
     for new in news_list:
         result = news_model.insert().values(
-            id=calc_hash(new['title']+new['url']),
-            date=new['date'],
-            title=new['title'],
-            text=new['text'],
-            url=new['url'],
-            img_url=new['img_url']
+            id=calc_hash(new.title + new.url),
+            date=new.date,
+            title=new.title,
+            text=new.text,
+            url=new.url,
+            img_url=new.img_url
         )
         conn = engine.connect()
     try:

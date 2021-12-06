@@ -7,3 +7,4 @@ SQLAlchemy~=1.4.26
 DateTime~=4.3
 crawler~=0.0.2
 grpcio~=1.42.0
+pydantic~=1.8.2
